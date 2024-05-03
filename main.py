@@ -99,7 +99,7 @@ def get_vacancies_hh(keyword):
     period_days = 30
     area_moscow = 1
     per_page = 100
-    list_salary = []
+    salaries = []
 
     while page < pages:
 
@@ -120,13 +120,13 @@ def get_vacancies_hh(keyword):
                 continue
             if not salary['currency'] == 'RUR':
                 continue
-            list_salary.append(predict_salary(salary['from'], salary['to']))
+            salaries.append(predict_salary(salary['from'], salary['to']))
 
         vacancies_found = all_vacancies["found"]
         pages = all_vacancies["pages"]
         page += 1
 
-    for salary in list_salary:
+    for salary in salaries:
         if salary:
             vacancies_processed += 1
             vacancies_processed_sum += salary
