@@ -15,17 +15,17 @@ def predict_salary(salary_from, salary_to):
         return None
 
 
-def get_table(title, dic_language):
+def get_table(title, statistics):
     table_data = [
         ['Язык программирования', 'Найдено вакансий',
          'Обработано вакансий', 'Средняя зарплата']
     ]
 
-    for language in dic_language:
+    for language in statistics:
         row = [language,
-               dic_language[language]['vacancies_found'],
-               dic_language[language]['vacancies_processed'],
-               dic_language[language]['average_salary']
+               statistics[language]['vacancies_found'],
+               statistics[language]['vacancies_processed'],
+               statistics[language]['average_salary']
                ]
         table_data.append(row)
 
@@ -77,17 +77,17 @@ def get_vacancies_sj(keyword, sj_token):
 
 
 def get_statistics_sj(languages, sj_token):
-    dic_language = {}
+    statistics = {}
 
     for language in languages:
         vacancies_found, vacancies_processed, average_salary = (
             get_vacancies_sj(f'Программист {language}', sj_token))
-        dic_statistics = {'vacancies_found': vacancies_found,
+        language_statistics = {'vacancies_found': vacancies_found,
                           'vacancies_processed': vacancies_processed,
                           'average_salary': average_salary}
-        dic_language.update({language: dic_statistics})
+        statistics.update({language: language_statistics})
 
-    return dic_language
+    return statistics
 
 
 def get_vacancies_hh(keyword):
@@ -137,17 +137,17 @@ def get_vacancies_hh(keyword):
 
 
 def get_statistics_hh(languages):
-    dic_language = {}
+    statistics = {}
 
     for language in languages:
         vacancies_found, vacancies_processed, average_salary = get_vacancies_hh(f'Программист {language}')
 
-        dic_statistics = {'vacancies_found': vacancies_found,
+        language_statistics = {'vacancies_found': vacancies_found,
                           'vacancies_processed': vacancies_processed,
                           'average_salary': average_salary}
-        dic_language.update({language: dic_statistics})
+        statistics.update({language: language_statistics})
 
-    return dic_language
+    return statistics
 
 
 def main():
