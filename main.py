@@ -139,7 +139,7 @@ def get_statistics_hh(languages):
         language_statistics = {'vacancies_found': vacancies_found,
                           'vacancies_processed': vacancies_processed,
                           'average_salary': average_salary}
-        statistics.update({language: language_statistics})
+        statistics[language] = language_statistics
 
     return statistics
 
