@@ -3,6 +3,19 @@ import requests
 from terminaltables import AsciiTable
 from dotenv import load_dotenv
 
+def get_vacancies_processed_average_salary(salaries):
+    vacancies_processed = 0
+    vacancies_processed_sum = 0
+    for salary in salaries:
+        if salary:
+            vacancies_processed += 1
+            vacancies_processed_sum += salary
+    try:
+        average_salary = int(vacancies_processed_sum / vacancies_processed)
+    except ZeroDivisionError:
+        average_salary = 0
+    return vacancies_processed , average_salary
+
 
 def predict_salary(salary_from, salary_to):
     if salary_from and not salary_to:
@@ -35,8 +48,6 @@ def get_table(title, statistics):
 
 def get_vacancies_sj(keyword, sj_token):
     vacancies_found = 0
-    vacancies_processed = 0
-    vacancies_processed_sum = 0
     page = 0
     area_moscow = 4
     per_page = 10
@@ -64,15 +75,7 @@ def get_vacancies_sj(keyword, sj_token):
         vacancies_found = all_vacancies["total"]
         page += 1
         availability_page = all_vacancies["objects"]
-    for salary in salaries:
-        if salary:
-            vacancies_processed += 1
-            vacancies_processed_sum += salary
-    try:
-        average_salary = int(vacancies_processed_sum/vacancies_processed)
-    except ZeroDivisionError:
-        average_salary = 0
-
+    vacancies_processed, average_salary = get_vacancies_processed_average_salary(salaries)
     return vacancies_found, vacancies_processed, average_salary
 
 
@@ -92,8 +95,6 @@ def get_statistics_sj(languages, sj_token):
 
 def get_vacancies_hh(keyword):
     vacancies_found = 0
-    vacancies_processed = 0
-    vacancies_processed_sum = 0
     page = 0
     pages = 1
     period_days = 30
@@ -125,14 +126,7 @@ def get_vacancies_hh(keyword):
         vacancies_found = all_vacancies["found"]
         pages = all_vacancies["pages"]
         page += 1
-
-    for salary in salaries:
-        if salary:
-            vacancies_processed += 1
-            vacancies_processed_sum += salary
-
-    average_salary = int(vacancies_processed_sum/vacancies_processed)
-
+    vacancies_processed, average_salary = get_vacancies_processed_average_salary(salaries)
     return vacancies_found, vacancies_processed, average_salary
 
 
