@@ -41,9 +41,9 @@ def get_vacancies_sj(keyword, sj_token):
     area_moscow = 4
     per_page = 10
     development_and_programming = 48
-    objects = True
+    availability_page = True
     salaries = []
-    while objects:
+    while availability_page:
         headers = {
             'X-Api-App-Id': sj_token
         }
@@ -63,7 +63,7 @@ def get_vacancies_sj(keyword, sj_token):
             salaries.append(predict_salary(vacancy["payment_from"],vacancy["payment_to"]))
         vacancies_found = all_vacancies["total"]
         page += 1
-        objects = all_vacancies["objects"]
+        availability_page = all_vacancies["objects"]
     for salary in salaries:
         if salary:
             vacancies_processed += 1
