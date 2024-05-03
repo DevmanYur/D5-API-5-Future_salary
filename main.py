@@ -21,14 +21,14 @@ def get_table(title, statistics):
          'Обработано вакансий', 'Средняя зарплата']
     ]
 
-    for language_statistics in statistics.items():
-        language, statistics = language_statistics
+    for language, statistic in statistics.items():
         row = [language,
-               statistics['vacancies_found'],
-               statistics['vacancies_processed'],
-               statistics['average_salary']
+               statistic['vacancies_found'],
+               statistic['vacancies_processed'],
+               statistic['average_salary']
                ]
         table_data.append(row)
+
     table = AsciiTable(table_data, title)
     return table.table
 
