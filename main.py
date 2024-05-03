@@ -3,6 +3,7 @@ import requests
 from terminaltables import AsciiTable
 from dotenv import load_dotenv
 
+
 def get_vacancies_processed_average_salary(salaries):
     vacancies_processed = 0
     vacancies_processed_sum = 0
@@ -14,7 +15,7 @@ def get_vacancies_processed_average_salary(salaries):
         average_salary = int(vacancies_processed_sum / vacancies_processed)
     except ZeroDivisionError:
         average_salary = 0
-    return vacancies_processed , average_salary
+    return vacancies_processed, average_salary
 
 
 def predict_salary(salary_from, salary_to):
@@ -33,7 +34,6 @@ def get_table(title, statistics):
         ['Язык программирования', 'Найдено вакансий',
          'Обработано вакансий', 'Средняя зарплата']
     ]
-
     for language, statistic in statistics.items():
         row = [language,
                statistic['vacancies_found'],
@@ -41,7 +41,6 @@ def get_table(title, statistics):
                statistic['average_salary']
                ]
         table_data.append(row)
-
     table = AsciiTable(table_data, title)
     return table.table
 
@@ -65,13 +64,13 @@ def get_vacancies_sj(keyword, sj_token):
             "catalogues": development_and_programming,
             "page": page,
         }
-        response = requests.get("https://api.superjob.ru/2.0/vacancies/", headers = headers, params=params)
+        response = requests.get("https://api.superjob.ru/2.0/vacancies/", headers=headers, params=params)
         response.raise_for_status()
         all_vacancies = response.json()
         for vacancy in all_vacancies["objects"]:
             if not vacancy["currency"] == 'rub':
                 continue
-            salaries.append(predict_salary(vacancy["payment_from"],vacancy["payment_to"]))
+            salaries.append(predict_salary(vacancy["payment_from"], vacancy["payment_to"]))
         vacancies_found = all_vacancies["total"]
         page += 1
         availability_page = all_vacancies["objects"]
@@ -86,10 +85,9 @@ def get_statistics_sj(languages, sj_token):
         vacancies_found, vacancies_processed, average_salary = (
             get_vacancies_sj(f'Программист {language}', sj_token))
         language_statistics = {'vacancies_found': vacancies_found,
-                          'vacancies_processed': vacancies_processed,
-                          'average_salary': average_salary}
+                               'vacancies_processed': vacancies_processed,
+                               'average_salary': average_salary}
         statistics.update({language: language_statistics})
-
     return statistics
 
 
@@ -103,7 +101,6 @@ def get_vacancies_hh(keyword):
     salaries = []
 
     while page < pages:
-
         params = {
             "text": keyword,
             "area": area_moscow,
@@ -132,15 +129,13 @@ def get_vacancies_hh(keyword):
 
 def get_statistics_hh(languages):
     statistics = {}
-
     for language in languages:
         vacancies_found, vacancies_processed, average_salary = get_vacancies_hh(f'Программист {language}')
 
         language_statistics = {'vacancies_found': vacancies_found,
-                          'vacancies_processed': vacancies_processed,
-                          'average_salary': average_salary}
+                               'vacancies_processed': vacancies_processed,
+                               'average_salary': average_salary}
         statistics[language] = language_statistics
-
     return statistics
 
 
