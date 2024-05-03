@@ -77,17 +77,17 @@ def get_vacancies_sj(keyword, sj_token):
 
 
 def get_statistics_sj(languages, sj_token):
-    statistics = {}
+    dic_language = {}
 
     for language in languages:
         vacancies_found, vacancies_processed, average_salary = (
             get_vacancies_sj(f'Программист {language}', sj_token))
-        language_statistics = {'vacancies_found': vacancies_found,
+        dic_statistics = {'vacancies_found': vacancies_found,
                           'vacancies_processed': vacancies_processed,
                           'average_salary': average_salary}
-        statistics.update({language: language_statistics})
+        dic_language.update({language: dic_statistics})
 
-    return statistics
+    return dic_language
 
 
 def get_vacancies_hh(keyword):
