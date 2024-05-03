@@ -58,10 +58,10 @@ def get_vacancies_sj(keyword, sj_token):
         response.raise_for_status()
         all_vacancies = response.json()
         for vacancy in all_vacancies["objects"]:
-            vacancies_found += 1
             if not vacancy["currency"] == 'rub':
                 continue
             salaries.append(predict_salary(vacancy["payment_from"],vacancy["payment_to"]))
+        vacancies_found = all_vacancies["total"]
         page += 1
         objects = all_vacancies["objects"]
     for salary in salaries:
