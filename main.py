@@ -45,7 +45,7 @@ def get_table(title, statistics):
     return table.table
 
 
-def get_vacancies_sj(keyword, sj_token):
+def get_salaries_vacancies_found_sj(keyword, sj_token):
     vacancies_found = 0
     page = 0
     area_moscow = 4
@@ -74,16 +74,14 @@ def get_vacancies_sj(keyword, sj_token):
         vacancies_found = all_vacancies["total"]
         page += 1
         availability_page = all_vacancies["objects"]
-    vacancies_processed, average_salary = get_vacancies_processed_average_salary(salaries)
-    return vacancies_found, vacancies_processed, average_salary
+    return salaries, vacancies_found
 
 
 def get_statistics_sj(languages, sj_token):
     statistics = {}
-
     for language in languages:
-        vacancies_found, vacancies_processed, average_salary = (
-            get_vacancies_sj(f'Программист {language}', sj_token))
+        salaries, vacancies_found = get_salaries_vacancies_found_sj(f'Программист {language}', sj_token)
+        vacancies_processed, average_salary = get_vacancies_processed_average_salary(salaries)
         language_statistics = {'vacancies_found': vacancies_found,
                                'vacancies_processed': vacancies_processed,
                                'average_salary': average_salary}
@@ -91,7 +89,7 @@ def get_statistics_sj(languages, sj_token):
     return statistics
 
 
-def get_vacancies_hh(keyword):
+def get_salaries_vacancies_founds_hh(keyword):
     vacancies_found = 0
     page = 0
     pages = 1
@@ -123,15 +121,14 @@ def get_vacancies_hh(keyword):
         vacancies_found = all_vacancies["found"]
         pages = all_vacancies["pages"]
         page += 1
-    vacancies_processed, average_salary = get_vacancies_processed_average_salary(salaries)
-    return vacancies_found, vacancies_processed, average_salary
+    return salaries, vacancies_found
 
 
 def get_statistics_hh(languages):
     statistics = {}
     for language in languages:
-        vacancies_found, vacancies_processed, average_salary = get_vacancies_hh(f'Программист {language}')
-
+        salaries, vacancies_found = get_salaries_vacancies_founds_hh(f'Программист {language}')
+        vacancies_processed, average_salary = get_vacancies_processed_average_salary(salaries)
         language_statistics = {'vacancies_found': vacancies_found,
                                'vacancies_processed': vacancies_processed,
                                'average_salary': average_salary}
